@@ -16,6 +16,15 @@ describe "User Stories" do
     # As an air traffic controller
     # So that I can avoid collisions
     # I want to prevent airplanes landing when my airport if full
+
+  # As an air traffic controller
+  # So that I can ensure safe take off procedures
+  # I want planes only to take off from the airport they are at
+  it "takes off planes only from the airport they are at" do
+    airport_2 = Airport.new(20, weather_reporter)
+    airport_2.land(plane)
+    expect {airport.take_off(plane)}.to raise_error "Cannot take off plane: plane is not at this airport."
+  end
     context "when airport is full" do
       it "does not allow planes to land" do
         20.times do
@@ -26,6 +35,7 @@ describe "User Stories" do
     end
 
     it "so planes take off from an airport, instruct a plane to take off" do
+      airport.land(plane)
       expect {airport.take_off(plane)}.not_to raise_error
     end
   end
